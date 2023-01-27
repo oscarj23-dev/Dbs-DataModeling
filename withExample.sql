@@ -1,0 +1,15 @@
+-- with expensive as (
+-- 	select manufacturer
+-- 	from purchase p, product r
+-- 	where r.product_id = p.product_id
+-- 	and p.price > 500
+-- ),
+-- cheap as (
+-- 	select r.manufacturer
+-- 	from purchase p, product r
+-- 	where r.product_id = p.product_id
+-- 	and p.price < 100
+-- ) 
+-- select distinct cheap.manufacturer as low, expensive.manufacturer as high
+-- from cheap
+-- join expensive on cheap.manufacturer = expensive.manufacturer
