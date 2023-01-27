@@ -53,8 +53,7 @@
 -- 	where r.model = ev.model
 -- 	and r.model_year - ev.model_year = 1
 -- 	order by (diff) desc
-	
--- )
+-- 	 )
 -- select r.make, r.model
 -- from year_on_year r
 -- order by r.diff desc 
@@ -71,8 +70,6 @@
 -- "TESLA"	"MODEL X"
 -- "HYUNDAI"	"IONIQ"
 -- "KIA"	"NIRO"
-
-
 
 -- 3. (15pt) Write a query to return the number of unique electric vehicles (by VIN)
 -- per census tract in Washington state along with the median household income
