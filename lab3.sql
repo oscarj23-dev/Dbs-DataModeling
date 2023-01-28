@@ -116,6 +116,8 @@
 -- order by i.median_hh_income_2020 desc
 -- limit 10;
 
+
+-- trying with CTEs
 with censi as ( 
 	SELECT e.census_tract, i.census_geo_id, count(distinct e.vin) as vic
 	FROM ev_wa e
@@ -129,18 +131,10 @@ with censi as (
 -- 	from income i
 -- 	where i.median_hh_income_2020 is not null
 -- )
-select c.census_tract, c.vic
+select *
 from censi c
 order by c.vic desc
 limit 10;
-
-
-
-
-
-
-
-
 
 
 
