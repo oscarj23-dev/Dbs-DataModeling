@@ -86,19 +86,21 @@
 -- of that census tract, for only tracts where the median income is available. The
 -- query should return only the top 10 tracts by highest median income.
 
--- SELECT e.census_tract, i.census_geo_id, i.median_hh_income_2020 as median, i.county_name, count(distinct e.vin) as unique_evs
--- FROM ev_wa e
--- JOIN income i ON i.census_geo_id LIKE CONCAT('%', e.census_tract)
--- where i.state_code is not null	
--- 	and i.census_geo_id is not null 
--- 	and e.census_tract is not null
--- 	and i.median_hh_income_2020 is not null
--- 	and i.state_code = '53'
--- group by e.census_tract, i.census_geo_id, i.median_hh_income_2020, i.county_name
--- order by i.median_hh_income_2020 desc
--- limit 10;
+SELECT e.census_tract, i.census_geo_id, i.median_hh_income_2020 as median, i.county_name, e.city, count(distinct e.vin) as unique_evs 
+FROM ev_wa e
+JOIN income i ON i.census_geo_id LIKE CONCAT('%', e.census_tract)
+where i.state_code is not null	
+	and i.census_geo_id is not null 
+	and e.census_tract is not null
+	and i.median_hh_income_2020 is not null
+	and i.county_name is not null
+	and e.city is not null
+	and i.state_code = '53'
+group by e.census_tract, i.census_geo_id, i.median_hh_income_2020, i.county_name, e.city
+order by i.median_hh_income_2020 asc
+limit 10;
 
--- ansers:
+-- answers:
 
 -- census_tract		census_geo_id			median	county_name		Unique_evs
 -- "53033004101"	"14000US53033004101"	250001	"King County"	222
@@ -115,8 +117,43 @@
 -- so I felt I should use this column since it was the first one, also added in county_name in because I was 
 -- curious to know which counties were in the top 10
 
+-- 4. (10pt) Retrieve the top 10 and bottom 10 tracts by median household income.
+-- Is there a difference in the number of electric vehicles in these sets of tracts?
+-- What are the cities associated with these tracts? You can use SQL to do this. Do
+-- the results match your expectations?
 
+-- answers:
 
+-- To address the changes in the dataset, I am assuming the city values for some of the answers in Q3
+-- were null so they were replaced with the city that had the next highest income.
+-- There is quite a big difference in the two sets of tracts, the cities associated with the top tracts
+-- tend to be more urban areas, while vice versa for the bottom tracts, they are more agricultural towns
+-- with heavy migrant populations. One thing I didnt expect was to see my home town sunnyside, I knew
+-- sunnyside wasn't home to the wealthiest residents but it is a little disheatening to see them in 
+-- this dataset.
+-- (top 10)
+-- "53033004101"	"14000US53033004101"	250001	"King County"	"Seattle"		222
+-- "53033024100"	"14000US53033024100"	250001	"King County"	"Clyde Hill"	208
+-- "53033024100"	"14000US53033024100"	250001	"King County"	"Hunts Point"	44
+-- "53033024100"	"14000US53033024100"	250001	"King County"	"Kirkland"		1
+-- "53033024100"	"14000US53033024100"	250001	"King County"	"Yarrow Point"	101
+-- "53033024602"	"14000US53033024602"	250001	"King County"	"Mercer Island"	252
+-- "53033024601"	"14000US53033024601"	245278	"King County"	"Mercer Island"	302
+-- "53033032217"	"14000US53033032217"	245099	"King County"	"Sammamish"		203
+-- "53033023902"	"14000US53033023902"	240833	"King County"	"Bellevue"		186
+-- "53033032215"	"14000US53033032215"	235821	"King County"	"Redmond"		4
+
+-- (bottom 10)
+-- "53075000100"	"14000US53075000100"	12473	"Whitman County"	"Pullman"	1
+-- "53063003500"	"14000US53063003500"	14280	"Spokane County"	"Spokane"	19
+-- "53075000601"	"14000US53075000601"	17294	"Whitman County"	"Pullman"	7
+-- "53075000602"	"14000US53075000602"	21024	"Whitman County"	"Pullman"	6
+-- "53075000500"	"14000US53075000500"	21696	"Whitman County"	"Pullman"	5
+-- "53033005305"	"14000US53033005305"	21781	"King County"		"Seattle"	23
+-- "53077002005"	"14000US53077002005"	21783	"Yakima County"		"Sunnyside"	7
+-- "53037975404"	"14000US53037975404"	22080	"Kittitas County"	"Ellensburg"12
+-- "53077000100"	"14000US53077000100"	23590	"Yakima County"		"Yakima"	7
+-- "53021020404"	"14000US53021020404"	24025	"Franklin County"	"Pasco"		3
 
 
 
