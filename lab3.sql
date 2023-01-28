@@ -84,57 +84,41 @@
 -- order by count(distinct e.vin) desc
 -- limit 100;
 
--- test bench
--- SELECT e.census_tract, i.census_geo_id, i.median_hh_income_2020 as med,
--- 	  i.median_hh_income_2020_1 as med1,
--- 	  i.median_hh_income_2020_2 as med2, 
--- 	  i.median_hh_income_2020_3 as med3,
--- 	  i.median_hh_income_2020_4 as med4,
--- 	  i.median_hh_income_2020_5 as med5,
--- 	  i.median_hh_income_2020_6 as med6,
--- 	  i.median_hh_income_2020_7 as med7,
--- count(distinct e.vin) as unique_evs
--- FROM ev_wa e
--- JOIN income i ON i.census_geo_id LIKE CONCAT('%', e.census_tract)
--- where i.census_geo_id is not null 
--- 	and e.census_tract is not null
--- 	and i.median_hh_income_2020 is not null 
--- 	and i.median_hh_income_2020_1 is not null 
--- 	and i.median_hh_income_2020_2 is not null 
--- 	and i.median_hh_income_2020_3 is not null 
--- 	and i.median_hh_income_2020_4 is not null 
--- 	and i.median_hh_income_2020_5 is not null 
--- 	and i.median_hh_income_2020_6 is not null 
--- 	and i.median_hh_income_2020_7 is not null 
--- group by e.census_tract, i.census_geo_id, i.median_hh_income_2020, i.median_hh_income_2020_1,
--- 		i.median_hh_income_2020_2, 
--- 		i.median_hh_income_2020_3,
--- 		i.median_hh_income_2020_4,
--- 		i.median_hh_income_2020_5,
--- 		i.median_hh_income_2020_6,
--- 		i.median_hh_income_2020_7
--- order by i.median_hh_income_2020 desc
--- limit 10;
-
-
--- trying with CTEs
-with censi as ( 
-	SELECT e.census_tract, i.census_geo_id, count(distinct e.vin) as vic
-	FROM ev_wa e
-	JOIN income i ON i.census_geo_id LIKE CONCAT('%', e.census_tract)	
-	where i.census_geo_id is not null 
+SELECT e.census_tract, i.census_geo_id, i.median_hh_income_2020 as median, i.county_name, count(distinct e.vin) as unique_evs
+FROM ev_wa e
+JOIN income i ON i.census_geo_id LIKE CONCAT('%', e.census_tract)
+where i.state_code is not null	
+	and i.census_geo_id is not null 
 	and e.census_tract is not null
-	group by e.census_tract, i.census_geo_id
-)
--- med as (
--- 	select i.median_hh_income_2020 as med
--- 	from income i
--- 	where i.median_hh_income_2020 is not null
--- )
-select *
-from censi c
-order by c.vic desc
+	and i.median_hh_income_2020 is not null
+	and i.state_code = '53'
+group by e.census_tract, i.census_geo_id, i.median_hh_income_2020, i.county_name
+order by i.median_hh_income_2020 desc
 limit 10;
+
+-- census_tract		census_geo_id			median	county_name		Unique_evs
+-- "53033004101"	"14000US53033004101"	250001	"King County"	222
+-- "53033024100"	"14000US53033024100"	250001	"King County"	323
+-- "53033024602"	"14000US53033024602"	250001	"King County"	252
+-- "53033024601"	"14000US53033024601"	245278	"King County"	302
+-- "53033032217"	"14000US53033032217"	245099	"King County"	203
+-- "53033023902"	"14000US53033023902"	240833	"King County"	186
+-- "53033032215"	"14000US53033032215"	235821	"King County"	234
+-- "53033024905"	"14000US53033024905"	223686	"King County"	218
+-- "53033006200"	"14000US53033006200"	217885	"King County"	215
+-- "53033032326"	"14000US53033032326"	213246	"King County"	193
+-- I made this data set with the i.median_hh_income_2020 column, it is not really specified in the assignment spec 
+-- so I felt I should use this column since it was the first one, also added in county_name in because I was 
+-- curious to know which counties were in the top 10
+
+
+
+
+
+
+
+
+
 
 
 
