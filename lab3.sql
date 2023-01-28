@@ -75,13 +75,80 @@
 -- per census tract in Washington state along with the median household income
 -- of that census tract, for only tracts where the median income is available. The
 -- query should return only the top 10 tracts by highest median income.
--- You may notice that the census tract identifier from the ‘ev_wa’ table takes a
--- different form than the census_geo_id from the ‘income’ table. You will need
--- a new function to join the two tables in this database on census tract. The fol-
--- lowing example query joins these two columns together using LIKE, which you
--- are familiar with, and a new function CONCAT, which concatenates two strings
--- together, including string values specified by table attributes. A few rows of the
--- resulting join are provided for reference.
+
+-- final query
+-- SELECT e.census_tract, i.census_geo_id, count(distinct e.vin)
+-- FROM ev_wa e
+-- JOIN income i ON i.census_geo_id LIKE CONCAT('%', e.census_tract)
+-- group by e.census_tract, i.census_geo_id
+-- order by count(distinct e.vin) desc
+-- limit 100;
+
+-- test bench
+-- SELECT e.census_tract, i.census_geo_id, i.median_hh_income_2020 as med,
+-- 	  i.median_hh_income_2020_1 as med1,
+-- 	  i.median_hh_income_2020_2 as med2, 
+-- 	  i.median_hh_income_2020_3 as med3,
+-- 	  i.median_hh_income_2020_4 as med4,
+-- 	  i.median_hh_income_2020_5 as med5,
+-- 	  i.median_hh_income_2020_6 as med6,
+-- 	  i.median_hh_income_2020_7 as med7,
+-- count(distinct e.vin) as unique_evs
+-- FROM ev_wa e
+-- JOIN income i ON i.census_geo_id LIKE CONCAT('%', e.census_tract)
+-- where i.census_geo_id is not null 
+-- 	and e.census_tract is not null
+-- 	and i.median_hh_income_2020 is not null 
+-- 	and i.median_hh_income_2020_1 is not null 
+-- 	and i.median_hh_income_2020_2 is not null 
+-- 	and i.median_hh_income_2020_3 is not null 
+-- 	and i.median_hh_income_2020_4 is not null 
+-- 	and i.median_hh_income_2020_5 is not null 
+-- 	and i.median_hh_income_2020_6 is not null 
+-- 	and i.median_hh_income_2020_7 is not null 
+-- group by e.census_tract, i.census_geo_id, i.median_hh_income_2020, i.median_hh_income_2020_1,
+-- 		i.median_hh_income_2020_2, 
+-- 		i.median_hh_income_2020_3,
+-- 		i.median_hh_income_2020_4,
+-- 		i.median_hh_income_2020_5,
+-- 		i.median_hh_income_2020_6,
+-- 		i.median_hh_income_2020_7
+-- order by i.median_hh_income_2020 desc
+-- limit 10;
+
+with censi as ( 
+	SELECT e.census_tract, i.census_geo_id, count(distinct e.vin) as vic
+	FROM ev_wa e
+	JOIN income i ON i.census_geo_id LIKE CONCAT('%', e.census_tract)	
+	where i.census_geo_id is not null 
+	and e.census_tract is not null
+	group by e.census_tract, i.census_geo_id
+)
+-- med as (
+-- 	select i.median_hh_income_2020 as med
+-- 	from income i
+-- 	where i.median_hh_income_2020 is not null
+-- )
+select c.census_tract, c.vic
+from censi c
+order by c.vic desc
+limit 10;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
