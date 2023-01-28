@@ -13,12 +13,17 @@
 -- from ( 
 -- 	select make, model_year, model, count(model) as models_sold, avg(electric_range) as range
 -- 	from ev_wa
+-- 	where make is not null
+-- 		and model_year is not null
+-- 		and model is not null
 -- 	group by make, model, model_year
 -- 	order by avg(electric_range) desc
 -- ) ev
 -- limit 10;
 
 -- answers:
+
+-- 	  Make		Model		Year	#sold	Average range
 -- -- "TESLA"	"MODEL S"	2020	380		331.2342105263157895
 -- -- "TESLA"	"MODEL 3"	2020	3683	297.3070866141732283
 -- -- "TESLA"	"MODEL X"	2020	646		291.6315789473684211
@@ -43,7 +48,10 @@
 -- with best_evr as( 
 -- 	select make, model_year, model, count(model) as models_sold, avg(electric_range) as e_range
 -- 	from ev_wa
--- 	where electric_range > 0
+-- 	where make is not null
+-- 		and model_year is not null
+-- 		and model is not null
+-- 		and electric_range > 0
 -- 	group by make, model, model_year
 -- 	order by avg(electric_range) desc
 -- ),
@@ -60,6 +68,8 @@
 -- limit 10;
 
 -- answers:
+
+-- make		model
 -- "KIA"	"NIRO"
 -- "TESLA"	"MODEL 3"
 -- "TESLA"	"MODEL S"
@@ -76,25 +86,19 @@
 -- of that census tract, for only tracts where the median income is available. The
 -- query should return only the top 10 tracts by highest median income.
 
--- final query
--- SELECT e.census_tract, i.census_geo_id, count(distinct e.vin)
+-- SELECT e.census_tract, i.census_geo_id, i.median_hh_income_2020 as median, i.county_name, count(distinct e.vin) as unique_evs
 -- FROM ev_wa e
 -- JOIN income i ON i.census_geo_id LIKE CONCAT('%', e.census_tract)
--- group by e.census_tract, i.census_geo_id
--- order by count(distinct e.vin) desc
--- limit 100;
+-- where i.state_code is not null	
+-- 	and i.census_geo_id is not null 
+-- 	and e.census_tract is not null
+-- 	and i.median_hh_income_2020 is not null
+-- 	and i.state_code = '53'
+-- group by e.census_tract, i.census_geo_id, i.median_hh_income_2020, i.county_name
+-- order by i.median_hh_income_2020 desc
+-- limit 10;
 
-SELECT e.census_tract, i.census_geo_id, i.median_hh_income_2020 as median, i.county_name, count(distinct e.vin) as unique_evs
-FROM ev_wa e
-JOIN income i ON i.census_geo_id LIKE CONCAT('%', e.census_tract)
-where i.state_code is not null	
-	and i.census_geo_id is not null 
-	and e.census_tract is not null
-	and i.median_hh_income_2020 is not null
-	and i.state_code = '53'
-group by e.census_tract, i.census_geo_id, i.median_hh_income_2020, i.county_name
-order by i.median_hh_income_2020 desc
-limit 10;
+-- ansers:
 
 -- census_tract		census_geo_id			median	county_name		Unique_evs
 -- "53033004101"	"14000US53033004101"	250001	"King County"	222
