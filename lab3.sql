@@ -128,9 +128,10 @@
 -- were null so they were replaced with the city that had the next highest income.
 -- There is quite a big difference in the two sets of tracts, the cities associated with the top tracts
 -- tend to be more urban areas, while vice versa for the bottom tracts, they are more agricultural towns
--- with heavy migrant populations. One thing I didnt expect was to see my home town sunnyside, I knew
--- sunnyside wasn't home to the wealthiest residents but it is a little disheatening to see them in 
--- this dataset.
+-- with heavy migrant populations. One thing I didnt expect was to see my home town sunnyside, having lived
+-- in sunnyside for most of my life I knew sunnyside wasn't home to the wealthiest residents
+-- but it is a little disheatening to see them in this dataset.
+
 -- (top 10)
 -- "53033004101"	"14000US53033004101"	250001	"King County"	"Seattle"		222
 -- "53033024100"	"14000US53033024100"	250001	"King County"	"Clyde Hill"	208
