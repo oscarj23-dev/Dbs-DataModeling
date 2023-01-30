@@ -86,19 +86,19 @@
 -- of that census tract, for only tracts where the median income is available. The
 -- query should return only the top 10 tracts by highest median income.
 
-SELECT e.census_tract, i.census_geo_id, i.median_hh_income_2020 as median, i.county_name, e.city, count(distinct e.vin) as unique_evs 
-FROM ev_wa e
-JOIN income i ON i.census_geo_id LIKE CONCAT('%', e.census_tract)
-where i.state_code is not null	
-	and i.census_geo_id is not null 
-	and e.census_tract is not null
-	and i.median_hh_income_2020 is not null
-	and i.county_name is not null
-	and e.city is not null
-	and i.state_code = '53'
-group by e.census_tract, i.census_geo_id, i.median_hh_income_2020, i.county_name, e.city
-order by i.median_hh_income_2020 asc
-limit 10;
+-- SELECT e.census_tract, i.census_geo_id, i.median_hh_income_2020 as median, i.county_name, e.city, count(distinct e.vin) as unique_evs 
+-- FROM ev_wa e
+-- JOIN income i ON i.census_geo_id LIKE CONCAT('%', e.census_tract)
+-- where i.state_code is not null	
+-- 	and i.census_geo_id is not null 
+-- 	and e.census_tract is not null
+-- 	and i.median_hh_income_2020 is not null
+-- 	and i.county_name is not null
+-- 	and e.city is not null
+-- 	and i.state_code = '53'
+-- group by e.census_tract, i.census_geo_id, i.median_hh_income_2020, i.county_name, e.city
+-- order by i.median_hh_income_2020 asc
+-- limit 10;
 
 -- answers:
 
