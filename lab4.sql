@@ -90,3 +90,4 @@
 -- 
 -- insert into ev (select DOL_vehicle_ID, vin, county, city, state, postal_code, model_year, make, model, ev_type, electric_range, base_msrp, census_tract from temp);
 -- oscarj23_db=> select * from ev limit 10;
+-- drop table temp;
